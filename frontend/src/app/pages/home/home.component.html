@@ -1,0 +1,128 @@
+<div class="home-container animate-fade-in">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">Django REST SimpleJWT + Angular 21 Architecture</span>
+      </div>
+
+      <h1 class="hero-title">
+        Modern, Rock-Solid <br/>
+        <span class="gradient-text">JWT Authentication</span> System
+      </h1>
+
+      <p class="hero-subtitle">
+        Seamless token lifecycle management with automatic refresh interceptors, 
+        granular route guards, and high-performance standalone Angular components.
+      </p>
+
+      <div class="hero-actions">
+        @if (authService.isAuthenticated()) {
+          <a routerLink="/dashboard" class="btn btn-primary btn-lg" id="home-btn-dashboard">
+            <span>Open Dashboard</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+          <a routerLink="/profile" class="btn btn-outline btn-lg" id="home-btn-profile">
+            <span>View Profile</span>
+          </a>
+        } @else {
+          <a routerLink="/register" class="btn btn-primary btn-lg" id="home-btn-register">
+            <span>Create Account</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+          <a routerLink="/login" class="btn btn-secondary btn-lg" id="home-btn-login">
+            <span>Sign In</span>
+          </a>
+        }
+      </div>
+
+      <!-- Feature Pill highlights -->
+      <div class="hero-tech-pills">
+        <div class="tech-pill">
+          <span class="tech-dot dot-orange"></span>
+          <span>Django SimpleJWT 6.1</span>
+        </div>
+        <div class="tech-pill">
+          <span class="tech-dot dot-blue"></span>
+          <span>Angular 21 Standalone</span>
+        </div>
+        <div class="tech-pill">
+          <span class="tech-dot dot-green"></span>
+          <span>Dual Token Rotation</span>
+        </div>
+        <div class="tech-pill">
+          <span class="tech-dot dot-orange"></span>
+          <span>CORS Secured</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Architecture Features -->
+  <section class="features-section container">
+    <div class="section-header">
+      <span class="badge badge-orange">Security & Architecture</span>
+      <h2 class="section-title">Engineered for Reliability</h2>
+      <p class="section-desc">Full-featured authentication architecture implementing industry best practices.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Card 1 -->
+      <div class="glass-card feature-card card-orange">
+        <div class="card-icon-box orange-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+          </svg>
+        </div>
+        <h3 class="card-title">Token Rotation</h3>
+        <p class="card-text">
+          Configured with 15-minute access tokens and 1-day refresh tokens. Tokens are automatically refreshed on 401 intercept.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="glass-card feature-card card-blue">
+        <div class="card-icon-box blue-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-2.18 7.348a1.5 1.5 0 01-1.64 0l-5.69-3.414A1.5 1.5 0 014 12.392V6.608a1.5 1.5 0 01.76-1.306l5.69-3.414a1.5 1.5 0 011.64 0l5.69 3.414a1.5 1.5 0 01.76 1.306v5.784a1.5 1.5 0 01-.76 1.306l-5.69 3.414z" />
+          </svg>
+        </div>
+        <h3 class="card-title">Route Protection</h3>
+        <p class="card-text">
+          Angular functional guards protect sensitive views like Dashboard and Profile, redirecting unauthenticated traffic to login.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="glass-card feature-card card-orange">
+        <div class="card-icon-box orange-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+          </svg>
+        </div>
+        <h3 class="card-title">HTTP Interceptor</h3>
+        <p class="card-text">
+          Transparent HTTP client interceptor appends Bearer headers to all requests and manages token refreshment automatically.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="glass-card feature-card card-blue">
+        <div class="card-icon-box blue-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+          </svg>
+        </div>
+        <h3 class="card-title">Signals & Reactivity</h3>
+        <p class="card-text">
+          Built entirely with Angular 21 Signals for instantaneous UI updates without unnecessary change detection cycles.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>

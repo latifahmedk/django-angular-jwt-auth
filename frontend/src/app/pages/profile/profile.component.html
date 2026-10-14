@@ -1,0 +1,90 @@
+<div class="profile-page container animate-fade-in">
+  <div class="profile-card glass-card">
+    <!-- Header Banner -->
+    <div class="profile-header-banner">
+      <div class="avatar-large">
+        {{ (authService.currentUser()?.username || 'U')[0].toUpperCase() }}
+      </div>
+      <div class="profile-header-text">
+        <h1 class="profile-name">{{ authService.currentUser()?.username || 'Authenticated User' }}</h1>
+        <p class="profile-email">{{ authService.currentUser()?.email || 'user@example.com' }}</p>
+      </div>
+
+      <div class="profile-header-actions">
+        <button
+          (click)="refreshProfile()"
+          class="btn btn-outline btn-sm"
+          [disabled]="isRefreshing()"
+          id="profile-btn-refresh"
+        >
+          @if (isRefreshing()) {
+            <span class="spinner spinner-orange"></span>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+          }
+          <span>Refresh Data</span>
+        </button>
+
+        <button (click)="onLogout()" class="btn btn-outline btn-sm btn-logout" id="profile-btn-logout">
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- User Information Grid -->
+    <div class="profile-body">
+      <h2 class="subheading">Account Credentials</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Account Identifier</span>
+          <span class="info-val">#{{ authService.currentUser()?.id || '—' }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Username</span>
+          <span class="info-val">{{ authService.currentUser()?.username || '—' }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Registered Email</span>
+          <span class="info-val">{{ authService.currentUser()?.email || '—' }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Status</span>
+          <span class="badge badge-success">Active & Verified</span>
+        </div>
+      </div>
+
+      <h2 class="subheading" style="margin-top: 2rem;">Security Architecture</h2>
+      <div class="security-cards-grid">
+        <div class="sec-card card-orange">
+          <div class="sec-card-header">
+            <span class="badge badge-orange">Authentication</span>
+            <h4>SimpleJWT v6.1</h4>
+          </div>
+          <p>Stateless JSON Web Tokens with cryptographic HMAC SHA-256 verification and client Bearer header injection.</p>
+        </div>
+
+        <div class="sec-card card-blue">
+          <div class="sec-card-header">
+            <span class="badge badge-blue">CORS Configuration</span>
+            <h4>Whitelist Protected</h4>
+          </div>
+          <p>Locked to origin <code>http://localhost:4200</code> with preflight handling and credential preservation.</p>
+        </div>
+      </div>
+
+      <div class="profile-nav-back">
+        <a routerLink="/dashboard" class="btn btn-primary" id="profile-btn-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span>Back to Dashboard</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

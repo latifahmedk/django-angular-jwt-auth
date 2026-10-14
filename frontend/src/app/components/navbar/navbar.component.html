@@ -1,0 +1,61 @@
+<header class="navbar-wrapper">
+  <div class="container navbar-inner">
+    <!-- Brand Logo -->
+    <a routerLink="/" class="navbar-brand" id="nav-brand-link">
+      <div class="brand-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="22" height="22">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">Auth<span class="highlight">Sphere</span></span>
+        <span class="brand-badge">JWT</span>
+      </div>
+    </a>
+
+    <!-- Center Navigation Links -->
+    <nav class="navbar-links" aria-label="Main navigation">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" id="nav-link-home">
+        Home
+      </a>
+
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link" id="nav-link-dashboard">
+          Dashboard
+        </a>
+        <a routerLink="/profile" routerLinkActive="active" class="nav-link" id="nav-link-profile">
+          Profile
+        </a>
+      }
+    </nav>
+
+    <!-- Right Actions -->
+    <div class="navbar-actions">
+      @if (authService.isAuthenticated()) {
+        <div class="user-profile-pill" id="nav-user-pill">
+          <div class="user-avatar">
+            {{ (authService.currentUser()?.username || 'U')[0].toUpperCase() }}
+          </div>
+          <span class="user-name">{{ authService.currentUser()?.username || 'Authenticated' }}</span>
+        </div>
+
+        <button (click)="onLogout()" class="btn btn-outline btn-sm logout-btn" id="nav-btn-logout" title="Sign out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+          </svg>
+          <span>Sign Out</span>
+        </button>
+      } @else {
+        <a routerLink="/login" class="btn btn-ghost" id="nav-btn-login">
+          Sign In
+        </a>
+        <a routerLink="/register" class="btn btn-primary" id="nav-btn-register">
+          <span>Get Started</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      }
+    </div>
+  </div>
+</header>

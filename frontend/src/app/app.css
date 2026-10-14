@@ -1,0 +1,58 @@
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex-grow: 1;
+}
+
+.app-footer {
+  border-top: 1px solid var(--slate-200);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--slate-500);
+}
+
+.footer-brand {
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.footer-brand .highlight {
+  color: var(--orange-500);
+}
+
+.footer-dot {
+  color: var(--slate-300);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge-outline {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  color: var(--slate-600);
+}
