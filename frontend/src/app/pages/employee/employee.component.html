@@ -1,0 +1,579 @@
+<div class="employee-page container animate-fade-in">
+  <!-- Page Header Banner -->
+  <section class="employee-banner glass-card">
+    <div class="banner-left">
+      <div class="header-icon-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+        </svg>
+      </div>
+      <div class="banner-text">
+        <div class="banner-greeting">
+          <h1 class="page-title">Employee Directory</h1>
+          <span class="badge badge-orange">
+            <span class="pulse-dot"></span>
+            Live Records
+          </span>
+        </div>
+        <p class="page-subtitle">Manage organization team members, assignments, roles, and compensation</p>
+      </div>
+    </div>
+
+    <div class="banner-actions">
+      <button
+        (click)="loadEmployees()"
+        class="btn btn-outline"
+        [disabled]="isLoading()"
+        id="emp-btn-refresh"
+        title="Sync employee directory"
+      >
+        @if (isLoading()) {
+          <span class="spinner spinner-orange"></span>
+        } @else {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+        }
+        <span>Sync Data</span>
+      </button>
+
+      <button
+        (click)="openCreateModal()"
+        class="btn btn-primary"
+        id="emp-btn-add"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <span>Add Employee</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Metrics Grid -->
+  <div class="metrics-grid">
+    <div class="glass-card metric-card">
+      <div class="metric-header">
+        <span class="metric-label">Total Staff</span>
+        <span class="badge badge-orange">Headcount</span>
+      </div>
+      <div class="metric-value text-orange">{{ totalCount() }}</div>
+      <div class="metric-footer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.999-3.199a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+        </svg>
+        <span>Registered team members</span>
+      </div>
+    </div>
+
+    <div class="glass-card metric-card">
+      <div class="metric-header">
+        <span class="metric-label">Active & Remote</span>
+        <span class="badge badge-success">Online</span>
+      </div>
+      <div class="metric-value text-green">{{ activeCount() }}</div>
+      <div class="metric-footer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Available for assignments</span>
+      </div>
+    </div>
+
+    <div class="glass-card metric-card">
+      <div class="metric-header">
+        <span class="metric-label">Departments</span>
+        <span class="badge badge-blue">Cross-Functional</span>
+      </div>
+      <div class="metric-value text-blue">{{ departmentCount() }}</div>
+      <div class="metric-footer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+        </svg>
+        <span>Operational business units</span>
+      </div>
+    </div>
+
+    <div class="glass-card metric-card">
+      <div class="metric-header">
+        <span class="metric-label">Average Salary</span>
+        <span class="badge badge-orange">Payroll</span>
+      </div>
+      <div class="metric-value text-slate">${{ avgSalary() | number:'1.0-0' }}</div>
+      <div class="metric-footer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Annual compensation mean</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <section class="controls-card glass-card">
+    <div class="controls-wrapper">
+      <!-- Search Input -->
+      <div class="search-box-wrapper">
+        <div class="form-input-wrapper">
+          <input
+            type="text"
+            class="form-input search-input"
+            placeholder="Search by name, email, department, position, status..."
+            [value]="searchTerm()"
+            (input)="onSearchChange($event)"
+            id="emp-search-input"
+          />
+          <span class="input-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </span>
+
+          @if (searchTerm()) {
+            <button
+              (click)="clearSearch()"
+              class="input-action-btn"
+              title="Clear search"
+              id="emp-btn-clear-search"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Department Filter -->
+      <div class="filter-group">
+        <label class="filter-label" for="dept-select">Department:</label>
+        <select
+          id="dept-select"
+          class="filter-select"
+          [ngModel]="selectedDepartment()"
+          (ngModelChange)="selectedDepartment.set($event)"
+        >
+          <option value="All">All Departments</option>
+          @for (dept of departments; track dept) {
+            <option [value]="dept">{{ dept }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Status Filter -->
+      <div class="filter-group">
+        <label class="filter-label" for="status-select">Status:</label>
+        <select
+          id="status-select"
+          class="filter-select"
+          [ngModel]="selectedStatus()"
+          (ngModelChange)="selectedStatus.set($event)"
+        >
+          <option value="All">All Statuses</option>
+          @for (st of statusOptions; track st) {
+            <option [value]="st">{{ st }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Reset / Counter -->
+      <div class="filter-results-info">
+        <span class="results-badge">
+          Showing <strong>{{ filteredEmployees().length }}</strong> of {{ totalCount() }}
+        </span>
+
+        @if (searchTerm() || selectedDepartment() !== 'All' || selectedStatus() !== 'All') {
+          <button (click)="clearSearch()" class="btn-clear-filters" id="emp-btn-reset-filters">
+            Reset Filters
+          </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Employee Table Glass Card -->
+  <section class="table-card glass-card">
+    @if (isLoading()) {
+      <div class="table-loading-state">
+        <span class="spinner spinner-orange spinner-lg"></span>
+        <p>Loading employee directory...</p>
+      </div>
+    } @else if (filteredEmployees().length === 0) {
+      <div class="table-empty-state">
+        <div class="empty-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="36" height="36">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        </div>
+        <h3 class="empty-title">No employees found</h3>
+        <p class="empty-desc">
+          @if (searchTerm() || selectedDepartment() !== 'All' || selectedStatus() !== 'All') {
+            No results match your current search and filter criteria. Try adjusting your query or resetting filters.
+          } @else {
+            No employee records in the system yet. Get started by adding your first employee.
+          }
+        </p>
+
+        @if (searchTerm() || selectedDepartment() !== 'All' || selectedStatus() !== 'All') {
+          <button (click)="clearSearch()" class="btn btn-outline" id="empty-btn-reset">
+            Reset Search & Filters
+          </button>
+        } @else {
+          <button (click)="openCreateModal()" class="btn btn-primary" id="empty-btn-add">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span>Add First Employee</span>
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="employee-table">
+          <thead>
+            <tr>
+              <th class="th-user">Employee</th>
+              <th class="th-dept">Department</th>
+              <th class="th-role">Position / Role</th>
+              <th class="th-phone">Contact</th>
+              <th class="th-salary">Salary</th>
+              <th class="th-status">Status</th>
+              <th class="th-actions text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (emp of filteredEmployees(); track emp.id) {
+              <tr class="table-row">
+                <!-- Employee Avatar & Name -->
+                <td class="td-user">
+                  <div class="user-cell">
+                    <div class="user-avatar-circle" [title]="emp.first_name + ' ' + emp.last_name">
+                      {{ getInitials(emp.first_name, emp.last_name) }}
+                    </div>
+                    <div class="user-details">
+                      <span class="user-fullname">{{ emp.first_name }} {{ emp.last_name }}</span>
+                      <span class="user-email-text">{{ emp.email }}</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Department -->
+                <td class="td-dept">
+                  <span class="badge" [ngClass]="getDepartmentClass(emp.department)">
+                    {{ emp.department }}
+                  </span>
+                </td>
+
+                <!-- Position -->
+                <td class="td-role">
+                  <span class="position-title">{{ emp.position }}</span>
+                  @if (emp.hire_date) {
+                    <span class="hire-date-text">Joined {{ emp.hire_date }}</span>
+                  }
+                </td>
+
+                <!-- Contact -->
+                <td class="td-phone">
+                  <span class="phone-text">{{ emp.phone || '—' }}</span>
+                </td>
+
+                <!-- Salary -->
+                <td class="td-salary">
+                  <span class="salary-value">${{ emp.salary | number:'1.0-0' }}</span>
+                  <span class="salary-frequency">/ year</span>
+                </td>
+
+                <!-- Status -->
+                <td class="td-status">
+                  <span class="status-pill" [ngClass]="getStatusClass(emp.status)">
+                    <span class="status-dot"></span>
+                    <span>{{ emp.status }}</span>
+                  </span>
+                </td>
+
+                <!-- Actions -->
+                <td class="td-actions text-right">
+                  <div class="action-buttons-group">
+                    <button
+                      (click)="openEditModal(emp)"
+                      class="action-btn action-edit"
+                      title="Edit employee"
+                      [id]="'emp-btn-edit-' + emp.id"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                      </svg>
+                      <span class="action-text">Edit</span>
+                    </button>
+
+                    <button
+                      (click)="openDeleteModal(emp)"
+                      class="action-btn action-delete"
+                      title="Delete employee"
+                      [id]="'emp-btn-delete-' + emp.id"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                      </svg>
+                      <span class="action-text">Delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  <!-- Create / Edit Employee Modal -->
+  @if (showModal()) {
+    <div class="modal-overlay animate-fade-in" (click)="closeModal()">
+      <div class="modal-dialog glass-card" (click)="$event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <div class="modal-header-text">
+            <h2 class="modal-title">
+              @if (isEditMode()) {
+                Edit Employee
+              } @else {
+                Add New Employee
+              }
+            </h2>
+            <p class="modal-subtitle">
+              @if (isEditMode()) {
+                Update employee role, personal details, and payroll data
+              } @else {
+                Fill out the required information to register a team member
+              }
+            </p>
+          </div>
+          <button (click)="closeModal()" class="modal-close-btn" title="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Modal Form -->
+        <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()" class="modal-form">
+          <div class="form-row-2">
+            <!-- First Name -->
+            <div class="form-group">
+              <label class="form-label" for="emp-first-name">First Name *</label>
+              <input
+                id="emp-first-name"
+                type="text"
+                class="form-input no-icon"
+                [class.is-invalid]="employeeForm.get('first_name')?.invalid && employeeForm.get('first_name')?.touched"
+                formControlName="first_name"
+                placeholder="e.g. Sarah"
+              />
+              @if (employeeForm.get('first_name')?.invalid && employeeForm.get('first_name')?.touched) {
+                <span class="form-error">First name is required.</span>
+              }
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+              <label class="form-label" for="emp-last-name">Last Name *</label>
+              <input
+                id="emp-last-name"
+                type="text"
+                class="form-input no-icon"
+                [class.is-invalid]="employeeForm.get('last_name')?.invalid && employeeForm.get('last_name')?.touched"
+                formControlName="last_name"
+                placeholder="e.g. Connor"
+              />
+              @if (employeeForm.get('last_name')?.invalid && employeeForm.get('last_name')?.touched) {
+                <span class="form-error">Last name is required.</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label" for="emp-email">Work Email *</label>
+              <input
+                id="emp-email"
+                type="email"
+                class="form-input no-icon"
+                [class.is-invalid]="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched"
+                formControlName="email"
+                placeholder="s.connor@authsphere.io"
+              />
+              @if (employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched) {
+                <span class="form-error">Valid work email is required.</span>
+              }
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+              <label class="form-label" for="emp-phone">Phone Number</label>
+              <input
+                id="emp-phone"
+                type="text"
+                class="form-input no-icon"
+                formControlName="phone"
+                placeholder="+1 (555) 234-5678"
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <!-- Department -->
+            <div class="form-group">
+              <label class="form-label" for="emp-dept">Department *</label>
+              <select id="emp-dept" class="form-input no-icon select-input" formControlName="department">
+                @for (d of departments; track d) {
+                  <option [value]="d">{{ d }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Position -->
+            <div class="form-group">
+              <label class="form-label" for="emp-position">Position / Job Title *</label>
+              <input
+                id="emp-position"
+                type="text"
+                class="form-input no-icon"
+                [class.is-invalid]="employeeForm.get('position')?.invalid && employeeForm.get('position')?.touched"
+                formControlName="position"
+                placeholder="e.g. Lead Software Architect"
+              />
+              @if (employeeForm.get('position')?.invalid && employeeForm.get('position')?.touched) {
+                <span class="form-error">Position title is required.</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <!-- Salary -->
+            <div class="form-group">
+              <label class="form-label" for="emp-salary">Annual Salary ($) *</label>
+              <input
+                id="emp-salary"
+                type="number"
+                min="0"
+                step="1000"
+                class="form-input no-icon"
+                [class.is-invalid]="employeeForm.get('salary')?.invalid && employeeForm.get('salary')?.touched"
+                formControlName="salary"
+                placeholder="95000"
+              />
+              @if (employeeForm.get('salary')?.invalid && employeeForm.get('salary')?.touched) {
+                <span class="form-error">Valid salary required.</span>
+              }
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+              <label class="form-label" for="emp-status">Employment Status *</label>
+              <select id="emp-status" class="form-input no-icon select-input" formControlName="status">
+                @for (st of statusOptions; track st) {
+                  <option [value]="st">{{ st }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Hire Date -->
+            <div class="form-group">
+              <label class="form-label" for="emp-hire-date">Hire Date</label>
+              <input
+                id="emp-hire-date"
+                type="date"
+                class="form-input no-icon"
+                formControlName="hire_date"
+              />
+            </div>
+          </div>
+
+          <!-- Modal Footer Actions -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              (click)="closeModal()"
+              class="btn btn-outline"
+              [disabled]="isSaving()"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isSaving()"
+              id="emp-btn-save"
+            >
+              @if (isSaving()) {
+                <span class="spinner"></span>
+                <span>Saving...</span>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                <span>{{ isEditMode() ? 'Save Changes' : 'Create Employee' }}</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Delete Confirmation Modal -->
+  @if (showDeleteModal()) {
+    <div class="modal-overlay animate-fade-in" (click)="closeDeleteModal()">
+      <div class="modal-dialog modal-dialog-sm glass-card" (click)="$event.stopPropagation()">
+        <div class="delete-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+          </svg>
+        </div>
+
+        <div class="delete-modal-body">
+          <h3 class="delete-title">Delete Employee Record</h3>
+          <p class="delete-desc">
+            Are you sure you want to remove
+            <strong>{{ employeeToDelete()?.first_name }} {{ employeeToDelete()?.last_name }}</strong>
+            ({{ employeeToDelete()?.position }}) from the employee directory?
+          </p>
+          <p class="delete-warning">This action cannot be undone.</p>
+        </div>
+
+        <div class="delete-modal-actions">
+          <button
+            type="button"
+            (click)="closeDeleteModal()"
+            class="btn btn-outline"
+            [disabled]="isDeleting()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            (click)="confirmDelete()"
+            class="btn btn-danger"
+            [disabled]="isDeleting()"
+            id="emp-btn-confirm-delete"
+          >
+            @if (isDeleting()) {
+              <span class="spinner"></span>
+              <span>Deleting...</span>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
+              <span>Delete Employee</span>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

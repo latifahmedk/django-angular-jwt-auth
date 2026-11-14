@@ -23,6 +23,13 @@
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-link" id="nav-link-dashboard">
           Dashboard
         </a>
+      }
+
+      <a routerLink="/employee" routerLinkActive="active" class="nav-link" id="nav-link-employee">
+        Employee
+      </a>
+
+      @if (authService.isAuthenticated()) {
         <a routerLink="/profile" routerLinkActive="active" class="nav-link" id="nav-link-profile">
           Profile
         </a>
